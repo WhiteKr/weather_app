@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/services/weather_service.dart';
+import 'package:weather_app/widgets/theme_mode_fab.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -82,14 +83,14 @@ class _WeatherPageState extends State<WeatherPage> {
                 Column(
                   children: [
                     Text(
-                      _weather?.mainCondition ?? '',
+                      '${_weather?.temperature.round()}°C',
                       style: const TextStyle(
-                        fontSize: 25,
+                        fontSize: 30,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     Text(
-                      '${_weather?.temperature.round()}°C',
+                      _weather?.mainCondition ?? '',
                       style: const TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w900,
@@ -102,6 +103,7 @@ class _WeatherPageState extends State<WeatherPage> {
           ),
         ),
       ),
+      floatingActionButton: const ThemeModeFab(),
     );
   }
 }
