@@ -64,7 +64,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lib/assets/config/.env
+    - assets/config/.env
+    - assets/lotties/weathers/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

@@ -4,7 +4,7 @@ import 'package:weather_app/pages/weather_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: 'lib/assets/config/.env');
+  await dotenv.load(fileName: 'assets/config/.env');
 
   runApp(const MyApp());
 }
