@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:lottie/lottie.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/services/weather_service.dart';
 
@@ -27,6 +28,31 @@ class _WeatherPageState extends State<WeatherPage> {
     }
   }
 
+  String getWeatherAnimation(String? mainCondition) {
+    const String basePath = 'assets/lotties/weathers';
+    if (mainCondition == null) return '$basePath/sunny.json';
+
+    switch (mainCondition.toLowerCase()) {
+      case 'clouds':
+      case 'mist':
+      case 'smoke':
+      case 'haze':
+      case 'dust':
+      case 'fog':
+        return '$basePath/windy.json';
+      case 'rain':
+      case 'drizzle':
+      case 'shower rain':
+        return '$basePath/partly_shower.json';
+      case 'thunderstorm':
+        return '$basePath/storm.json';
+      case 'clear':
+        return '$basePath/sunny.json';
+      default:
+        return '$basePath/sunny.json';
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -36,13 +62,44 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(_weather?.cityName ?? 'loading city...'),
-            Text('${_weather?.temperature.round()}°C'),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    const Icon(Icons.location_pin),
+                    Text(
+                      _weather?.cityName ?? 'loading city...',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                Lottie.asset(getWeatherAnimation(_weather?.mainCondition)),
+                Column(
+                  children: [
+                    Text(
+                      _weather?.mainCondition ?? '',
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Text(
+                      '${_weather?.temperature.round()}°C',
+                      style: const TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
