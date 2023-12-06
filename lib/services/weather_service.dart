@@ -1,19 +1,20 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:weather_app/models/weather_model.dart';
 
 class WeatherService {
-  static const String BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
-  final String apiKey;
+  static const String baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
+  static final String apiKey = dotenv.env['WEATHER_API_KEY']!;
 
-  WeatherService(this.apiKey);
+  WeatherService();
 
   Future<Weather> getWeather(String cityName) async {
     final http.Response response = await http.get(
-      Uri.parse('$BASE_URL?q=$cityName&appid=$apiKey&units=metric'),
+      Uri.parse('$baseUrl?q=$cityName&appid=$apiKey&units=metric'),
     );
     if (response.statusCode != 200) {
       throw Exception('Failed to load weather data');
@@ -33,5 +34,30 @@ class WeatherService {
     String? city = placemarks[0].locality;
 
     return city ?? '';
+  }
+
+  String getWeatherAnimation(String? mainCondition) {
+    const String basePath = 'assets/lotties/weathers';
+    if (mainCondition == null) return '$basePath/sunny.json';
+
+    switch (mainCondition.toLowerCase()) {
+      case 'clouds':
+      case 'mist':
+      case 'smoke':
+      case 'haze':
+      case 'dust':
+      case 'fog':
+        return '$basePath/windy.json';
+      case 'rain':
+      case 'drizzle':
+      case 'shower rain':
+        return '$basePath/partly_shower.json';
+      case 'thunderstorm':
+        return '$basePath/storm.json';
+      case 'clear':
+        return '$basePath/sunny.json';
+      default:
+        return '$basePath/sunny.json';
+    }
   }
 }
