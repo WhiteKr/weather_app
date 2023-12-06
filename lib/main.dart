@@ -7,7 +7,6 @@ import 'package:weather_app/services/theme/custom_theme_mode.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: 'assets/config/.env');
-
   CustomThemeMode.instance;
 
   runApp(const MyApp());
